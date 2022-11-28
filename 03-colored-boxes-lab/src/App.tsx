@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import tinycolor from 'tinycolor2';
 
 function ColorBox(props) {
@@ -33,7 +33,7 @@ function ColorPalette(props) {
     setDeletedBoxes(new Set(deletedBoxes));
   }
 
-  const colors = [];
+  const colors: Array<JSX.Element> = [];
   for (let i=-360; i < 360; i++) {
     if (deletedBoxes.has(i)) continue;
 
@@ -46,10 +46,10 @@ function ColorPalette(props) {
       />
     );
   }
-  return colors;
+  return <>{colors}</>;
 }
 
-function App(props) {
+function App() {
   const [ticks, setTicks] = useState(0);
   const [color, setColor] = useState('#000000');
   console.log('ColorSelector');
