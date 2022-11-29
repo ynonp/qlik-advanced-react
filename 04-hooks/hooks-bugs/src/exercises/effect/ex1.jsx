@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 // This component displays the current window size
 // It updates every {prop.updateMs} milliseconds
-
+// Find and fix the bug
 export default function WindowSize(props) {
   const { updateMs=1000 } = props;
   const [width, setWidth] = useState(window.innerWidth);
@@ -19,7 +19,7 @@ export default function WindowSize(props) {
     return () => {
       window.removeEventListener('resize', handleResize);
     }
-  }, []);
+  }, [updateMs]);
 
 
   return (

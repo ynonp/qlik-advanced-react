@@ -1,3 +1,4 @@
+import { reduce } from "lodash";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 
 // The component MeasureExample wants to show the height of the <h1>
@@ -23,19 +24,20 @@ const Child = React.forwardRef(function Child(props, ref) {
 
 function MeasureExample() {
   const [height, setHeight] = useState(0);
-
-  const measuredRef = useRef(null);
-  useEffect(() => {
-    const node = measuredRef.current;
+  const el = useRef(null);
+  
+  const measuredRef =(node) => {    
     if (node !== null) {
       setHeight(node.getBoundingClientRect().height);
     } else {
       setHeight(-1);
     }
-  }, [measuredRef.current]);
+  };
 
   return (
     <>
+      <button onClick={() => setStupidState(c => c + 1)}>Render</button>
+      <p>Ref.current = {JSON.stringify(!!measuredRef.current)}</p>
       <Child ref={measuredRef} />
       <h2>The above header is {Math.round(height)}px tall</h2>
     </>

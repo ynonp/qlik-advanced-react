@@ -7,15 +7,18 @@ import { useEffect, useRef, useState } from "react";
 // Find the bug and fix it
 
 function useTitle(title) {
+  console.count(`useTitle`);
   const prevTitleRef = useRef(document.title);
 
-  if (document.title !== title) document.title = title;
-
   useEffect(() => {
+    console.count(`useTitle::effect setup`);
+    if (document.title !== title) document.title = title;
+
     return () => {
+      console.count(`useTitle::effect cleanup`);
       document.title = prevTitleRef.current;
     };
-  }, []);
+  }, [title]);
 }
 
 function Foo() {
@@ -24,7 +27,7 @@ function Foo() {
 }
 
 export default function App() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   return (
     <div className="App">

@@ -35,32 +35,67 @@ setInterval(() => {
   eventBus.emit(cat, `hello from ${cat}`);
 }, 500);
 
+function Subscription({ active, handleChange, cat }) {
+  useEffect(() => {
+    if (active) {
+      eventBus.on(cat, console.log);
+    }
+    
+    return () => {
+      if (active) {
+        eventBus.off(cat, console.log);
+      }
+    };
+  }, [active, cat]);  
+
+  return (
+  <li>
+    <input type="checkbox" checked={active}
+      onChange={(e) => handleChange(e, cat)}
+    />
+    {cat}
+  </li>
+  )
+}
+
+
 function Listener() {
   const [active, setActive] = useState([]);
 
-  useEffect(() => {
-    active.forEach(c => {
-      eventBus.on(c, console.log);
-    });
+  function selectAll() {
+    setActive(categories);
+    // categories.forEach((c) => eventBus.on(c, console.log));
+  }
 
-    return () => {
-      active.forEach(c => {
-        eventBus.off(c, console.log);
-      });
-    };
-  }, [active]);
+  function clearAll() {
+    setActive([]);
+  }
+
+  function handleChange(e, category) {
+    if (e.target.checked) {
+      // subscribe
+      // setActive([...active, category]);
+      setActive(oldActive => [...oldActive, category]);
+      // eventBus.on(category, console.log);
+    } else {
+      setActive(active.filter(c => c !== category));
+      // eventBus.off(category, console.log);
+    }
+  }
+
 
   return (
     <>
       <p>Subscribed to {active.join(', ')}</p>
+      <button onClick={selectAll}>Select All</button>
+      <button onClick={clearAll}>Clear All</button>
       <ul>
         {categories.map(c =>
-        <li>
-          <input type="checkbox" checked={active.includes(c)}
-            onChange={(e) => setActive(act => e.target.checked ? [...act, c] : act.filter(cc => cc !== c))}
-          />
-          {c}
-        </li>
+          <Subscription
+            handleChange={handleChange}
+            active={active.includes(c)}
+            cat={c}
+            />
         )}
       </ul>
     </>
