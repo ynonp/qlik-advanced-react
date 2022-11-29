@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import _ from 'lodash';
 
 function TodoList({ items, toggleDone }) {
   const [filter, setFilter] = useState('');
@@ -24,14 +25,12 @@ function TodoList({ items, toggleDone }) {
 
 
 function App() {
-  const [items, setItems] = useState([
-    { id: 1, text: 'write code', done: false },
-    { id: 2, text: 'fix the code', done: false },
-    { id: 3, text: 'push to production', done: false },
-    { id: 4, text: 'hotfix critical bugs in new code', done: false },
-  ]);
-
+  const [items, setItems] = useState(
+    _.range(10_000).map(i => ({ id: i, text: `Write code ${i}`, done: Math.random() > 0.5 }))
+  )
+ 
   function toggleDone(item) {    
+
     setItems(oldValue => oldValue.map(i =>
       i.id === item.id ? { ...item, done: !item.done } : i 
     ));    
