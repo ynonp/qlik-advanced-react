@@ -12,7 +12,7 @@ export const notesApi = createApi({
   }),
   endpoints: (builder) => ({
     getNotes: builder.query({
-      query: () => `/notes`,
+      query: () => `/notes`,      
     }),
     getNote: builder.query({
       query: (noteId) => `/notes/${noteId}`

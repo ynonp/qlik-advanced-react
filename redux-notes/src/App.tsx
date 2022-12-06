@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import './App.css'
-import { RootState } from './store';
+import { RootState, store } from './store';
+
+const UserName = () => {
+  const user = useSelector((state: RootState) => state.profile.user);
+
+  // The return type will be inferred from the return value
+  return <div>Welcome, {user.name}</div>;
+};
 
 const Notes= () => {
   const notes = useSelector((state: RootState) => state.notes.notes);
@@ -20,6 +27,7 @@ function App() {
 
   return (
     <div className="App">
+      <UserName />
       <Notes />
     </div>
   )

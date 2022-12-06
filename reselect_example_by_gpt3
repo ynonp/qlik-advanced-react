@@ -1,0 +1,23 @@
+Sure, here's an example of a pitfall with not memoizing selectors properly:
+
+// Without memoization, this selector will be recomputed on every call
+const getVisibleTodos = (state) => {
+  // This selector performs a complex calculation on the state
+  // to filter and sort the todos
+  return state.todos.filter(t => !t.completed).sort((a, b) => a.timestamp - b.timestamp);
+}
+
+In this example, the getVisibleTodos selector performs a complex calculation on the state to filter and sort the todos. However, because it is not memoized, it will be recomputed on every call, which can lead to performance problems.
+
+To fix this issue, you can use the reselect library to memoize the selector like this:
+
+import { createSelector } from 'reselect';
+
+// With memoization, this selector will only be recomputed
+// when the underlying data changes
+const getVisibleTodos = createSelector(
+  state => state.todos,
+  todos => todos.filter(t => !t.completed).sort((a, b) => a.timestamp - b.timestamp)
+);
+
+In this version of the getVisibleTodos selector, we use the createSelector function from reselect to memoize the selector. This means that the selector will only be recomputed when the underlying data (in this case, the todos array) changes, which can greatly improve the performance of your Redux application.

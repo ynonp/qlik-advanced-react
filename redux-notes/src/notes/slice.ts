@@ -1,6 +1,8 @@
 // notes/slice.ts
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { createNote } from './actions';
+import { changeUser } from '../profile/actions';
 
 interface Note {
   id: string;
@@ -20,14 +22,20 @@ const initialState: NotesState = {
 export const notesSlice = createSlice({
   name: 'notes',
   initialState,
-  reducers: {
-    createNote: (state, action) => {
-      state.notes.push(action.payload);
-    },
+  reducers: {        
     deleteNote: (state, action) => {
       state.notes = state.notes.filter(n => n.id !== action.payload);
     }
   },
+  extraReducers: (builder) => {
+    builder.addCase(createNote, (state, action) => {
+      state.notes.push(action.payload);
+    });
+
+    builder.addCase(changeUser, () => {
+      return initialState;
+    });
+  }
 })
 
 // Action creators are generated for each case reducer function
